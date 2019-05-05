@@ -3,4 +3,7 @@ osx_image: xcode10.2
 branches:
   only:
     - master
-script: set -o pipefail && xcodebuild build -project LegacyDemo.xcodeproj | xcpretty
+before_script:
+  - carthage bootstrap --platform "iOS"
+script:
+  - set -o pipefail && xcodebuild test -project LegacyDemo.xcodeproj -scheme LegacyDemo -destination 'platform=iOS Simulator,name=iPhone 8' | xcpretty
