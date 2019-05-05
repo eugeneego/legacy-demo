@@ -1,0 +1,13 @@
+templates:
+    - Carthage/Checkouts/legacy/Sources/Templates
+output:
+    LegacyDemo/Generated
+prune:
+    true
+verbose:
+    true
+project:
+    file:
+        LegacyDemo.xcodeproj
+    target:
+        name: LegacyDemo
