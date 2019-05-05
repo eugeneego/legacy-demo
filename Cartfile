@@ -1,2 +1,2 @@
-github "eugeneego/legacy" "feature/core"
-github "eugeneego/legacy-gallery" "master"
+github "eugeneego/legacy" ~> 7.0
+github "eugeneego/legacy-gallery" ~> 1.0
