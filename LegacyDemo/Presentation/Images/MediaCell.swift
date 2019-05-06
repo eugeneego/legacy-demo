@@ -1,6 +1,6 @@
 //
 // MediaCell
-// Example-iOS
+// LegacyDemo
 //
 // Created by Eugene Egorov on 20 July 2018.
 // Copyright (c) 2018 Eugene Egorov. All rights reserved.

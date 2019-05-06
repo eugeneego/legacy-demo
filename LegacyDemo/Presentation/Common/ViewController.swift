@@ -1,6 +1,6 @@
 //
 // ViewController
-// Example-iOS
+// LegacyDemo
 //
 // Created by Eugene Egorov on 09 September 2018.
 // Copyright (c) 2018 Eugene Egorov. All rights reserved.
