@@ -61,6 +61,7 @@
 		B2FA8D343F7FCB76BCB75C1F /* 17-milkovi-644010-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2FA89FB47422699EA8F5255 /* 17-milkovi-644010-unsplash.jpg */; };
 		B2FA8D55E8395C328A810532 /* RestConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA8EB41C0D1F48107F1963 /* RestConfigurator.swift */; };
 		B2FA8D67901B6F77C6BBE8CB /* big_buck_bunny.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2FA82BA0A8E50387F566416 /* big_buck_bunny.jpg */; };
+		B2FA8DA3AC9B540378E7A92C /* ContainerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA8A5D832FF4D04AE30504 /* ContainerBuilder.swift */; };
 		B2FA8DA67657C53E0F19871F /* FeedRawIntLightTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA81742EEE3483C4D9D65B /* FeedRawIntLightTransformer.swift */; };
 		B2FA8E326BE3BF7A871C49D5 /* FeedSubscriptionTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA870E75265BD81CC7B083 /* FeedSubscriptionTransformer.swift */; };
 		B2FA8E52A6E33FE3E3731884 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA8C90CBF469E86FD1F436 /* ProfileViewController.swift */; };
@@ -131,6 +132,7 @@
 		B2FA8A203E7A8D44F7890FD4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2FA8A49DD648E8B8C5A90B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LegacyDemo/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		B2FA8A5CD9FE82315814707B /* 06-vladimir-kudinov-92149-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "06-vladimir-kudinov-92149-unsplash.jpg"; sourceTree = "<group>"; };
+		B2FA8A5D832FF4D04AE30504 /* ContainerBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerBuilder.swift; sourceTree = "<group>"; };
 		B2FA8AAF9425240FD155DB03 /* 01-kyle-loftus-673612-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "01-kyle-loftus-673612-unsplash.jpg"; sourceTree = "<group>"; };
 		B2FA8B2C50A65D4AA98A45DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		B2FA8B48160C6EBE8ABF8F5E /* 12-fancycrave-458019-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "12-fancycrave-458019-unsplash.jpg"; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				B2FA8EB41C0D1F48107F1963 /* RestConfigurator.swift */,
 				B2FA8F556B8B9183D0BE2EBF /* Configurator.swift */,
 				B2FA8F9922B3E06351FE7540 /* MockConfigurator.swift */,
+				B2FA8A5D832FF4D04AE30504 /* ContainerBuilder.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -603,6 +606,7 @@
 				B2FA8DA67657C53E0F19871F /* FeedRawIntLightTransformer.swift in Sources */,
 				B2FA85D16053FA56B98467AB /* FeedRawKindLightTransformer.swift in Sources */,
 				B2FA845072C261A33748497B /* FeedRawIntTransformer.swift in Sources */,
+				B2FA8DA3AC9B540378E7A92C /* ContainerBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

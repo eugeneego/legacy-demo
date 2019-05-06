@@ -6,7 +6,7 @@
 // Copyright (c) 2017 Eugene Egorov. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import Legacy
 
 final class MockConfigurator: Configurator {
@@ -24,38 +24,24 @@ final class MockConfigurator: Configurator {
         configuration.urlCache = URLCache(memoryCapacity: imagesMemoryCapacity, diskCapacity: imagesDiskCapacity, diskPath: nil)
 
         let queue = DispatchQueue.global(qos: .default)
-
-        let http = UrlSessionHttp(configuration: configuration, responseQueue: queue, logger: logger)
+        let http = UrlSessionHttp(configuration: configuration, responseQueue: queue, logger: logger, loggerTag: "ImagesHttp")
         return http
     }
 
     func create() -> DependencyInjectionContainer {
-        let container = Odin()
-
-        let logger: Logger = PrintLogger()
+        let logger = PrintLogger()
         let imagesHttp = self.imagesHttp(logger: logger)
 
         let imageLoader = AppImageLoader(imageLoader: HttpImageLoader(http: imagesHttp))
         let feedService = MockFeedService()
         let mediaService = MockMediaService()
 
-        // Registering protocols resolvers.
-        container.register { (object: inout LoggerDependency) in object.logger = logger }
-        container.register { (object: inout TaggedLoggerDependency) in
-            let tag = String(describing: type(of: object))
-            object.logger = SimpleTaggedLogger(logger: logger, tag: tag)
-        }
-        container.register { (object: inout ImageLoaderDependency) in object.imageLoader = imageLoader }
-        container.register { (object: inout FeedServiceDependency) in object.feedService = feedService }
-        container.register { (object: inout MediaServiceDependency) in object.mediaService = mediaService }
-        container.register { [unowned container] (object: inout DependencyContainerDependency) in object.container = container }
-
-        // Registering type resolvers.
-        container.register { () -> Logger in logger }
-        container.register { () -> ImageLoader in imageLoader }
-        container.register { () -> FeedService in feedService }
-        container.register { () -> MediaService in mediaService }
-
-        return container
+        let builder = ContainerBuilder(
+            logger: logger,
+            imageLoader: imageLoader,
+            feedService: feedService,
+            mediaService: mediaService
+        )
+        return builder.build()
     }
 }
