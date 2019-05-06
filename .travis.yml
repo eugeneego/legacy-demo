@@ -4,6 +4,6 @@ branches:
   only:
     - master
 before_script:
-  - carthage bootstrap --platform "iOS"
+  - carthage bootstrap --platform iOS
 script:
   - set -o pipefail && xcodebuild test -project LegacyDemo.xcodeproj -scheme LegacyDemo -destination 'platform=iOS Simulator,name=iPhone 8' | xcpretty
