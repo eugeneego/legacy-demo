@@ -38,9 +38,9 @@ public struct Storage {
         return path
     }
 
-    public static let libraryScheme = "library"
-    public static let documentsScheme = "documents"
-    public static let cachesScheme = "cache"
+    public static let libraryScheme: String = "library"
+    public static let documentsScheme: String = "documents"
+    public static let cachesScheme: String = "cache"
 
     public static let schemeDirectories: [String: URL] = [
         libraryScheme: libraryDirectory,
