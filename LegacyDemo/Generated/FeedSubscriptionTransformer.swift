@@ -16,7 +16,7 @@ struct FeedSubscriptionTransformer: Transformer {
 
         switch rawValue {
             case 0:
-                return .success(.none)
+                return .success(.empty)
             case 1:
                 return .success(.posts)
             case 2:
@@ -28,7 +28,7 @@ struct FeedSubscriptionTransformer: Transformer {
 
     func transform(destination value: Destination) -> TransformerResult<Source> {
         switch value {
-            case .none:
+            case .empty:
                 return transformer.transform(destination: 0)
             case .posts:
                 return transformer.transform(destination: 1)
