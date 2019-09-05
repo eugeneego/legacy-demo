@@ -14,6 +14,6 @@ class ProfileViewController: UIViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        .portrait
     }
 }

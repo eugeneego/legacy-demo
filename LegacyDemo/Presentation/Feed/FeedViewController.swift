@@ -14,6 +14,6 @@ class FeedViewController: UIViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        .portrait
     }
 }

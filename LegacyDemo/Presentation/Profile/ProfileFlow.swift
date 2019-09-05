@@ -15,7 +15,7 @@ class ProfileFlow {
     private let profileViewController: ProfileViewController
 
     var viewController: UIViewController {
-        return navigationController
+        navigationController
     }
 
     init(container: DependencyInjectionContainer) {

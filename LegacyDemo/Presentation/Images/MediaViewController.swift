@@ -45,7 +45,7 @@ class MediaViewController: ViewController, ImageLoaderDependency,
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        .portrait
     }
 
     private func update() {
@@ -60,7 +60,7 @@ class MediaViewController: ViewController, ImageLoaderDependency,
     // MARK: - Collection View
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return media.count
+        media.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

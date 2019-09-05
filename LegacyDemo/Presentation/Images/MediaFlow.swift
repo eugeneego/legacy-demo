@@ -12,7 +12,7 @@ import LegacyGallery
 
 class MediaFlow {
     var viewController: UIViewController {
-        return navigationController
+        navigationController
     }
 
     private let container: DependencyInjectionContainer
@@ -62,8 +62,8 @@ class MediaFlow {
                         url: nil,
                         previewImage: item.offset == index ? image : nil,
                         previewImageLoader: thumbnail.map { thumbnail in
-                            // swiftlint:disable:next implicit_return
-                            return { size, completion in
+                            // swiftlint:disable:next opening_brace
+                            { size, completion in
                                 imageLoader.load(url: thumbnail, size: size, mode: .fill) { result in
                                     completion(result.map(success: { .success($0.image) }, failure: { .failure($0) }))
                                 }

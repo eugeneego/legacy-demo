@@ -15,7 +15,7 @@ class FeedFlow {
     private let feedViewController: FeedViewController
 
     var viewController: UIViewController {
-        return navigationController
+        navigationController
     }
 
     init(container: DependencyInjectionContainer) {
