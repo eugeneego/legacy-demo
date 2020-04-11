@@ -35,7 +35,7 @@ struct Feed {
     enum Subscription {
         // sourcery: enumTransformer.value = 0
         // sourcery: enumLightTransformer.value = 0
-        case none
+        case empty
         // sourcery: enumTransformer.value = 1
         // sourcery: enumLightTransformer.value = 1
         case posts

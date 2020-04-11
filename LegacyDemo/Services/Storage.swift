@@ -10,19 +10,19 @@ import Foundation
 
 public struct Storage {
     public static var libraryDirectory: URL {
-        return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
+        FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
     }
 
     public static var documentsDirectory: URL {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 
     public static var cachesDirectory: URL {
-        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
     }
 
     public static var tempDirectory: URL {
-        return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
     }
 
     public static func createDirectory(url: URL) {

@@ -15,7 +15,7 @@ class FeedFlow {
     private let feedViewController: FeedViewController
 
     var viewController: UIViewController {
-        return navigationController
+        navigationController
     }
 
     init(container: DependencyInjectionContainer) {
@@ -25,6 +25,9 @@ class FeedFlow {
         container.resolve(feedViewController)
 
         navigationController = UINavigationController(rootViewController: feedViewController)
-        navigationController.tabBarItem = UITabBarItem(title: "Feed", image: nil, selectedImage: nil)
+
+        let tabImage = UIImage.system(name: "table")
+        let tabSelectedImage = UIImage.system(name: "table.fill")
+        navigationController.tabBarItem = UITabBarItem(title: "Feed", image: tabImage, selectedImage: tabSelectedImage)
     }
 }

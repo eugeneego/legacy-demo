@@ -10,10 +10,10 @@ import UIKit
 
 class TabBarController: UITabBarController {
     override var shouldAutorotate: Bool {
-        return true
+        true
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        .portrait
     }
 }

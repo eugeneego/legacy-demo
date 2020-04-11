@@ -1,0 +1,192 @@
+<%_
+//
+// Light Transformer
+// Legacy
+//
+// Copyright (c) 2017 Eugene Egorov.
+// License: MIT, https://github.com/eugeneego/legacy/blob/master/LICENSE
+//
+
+func cleanTypeName(_ s: String) -> String {
+    return s.replacingOccurrences(of: ".", with: "")
+}
+
+func stringAnnotation(_ object: Annotated, _ name: String, _ default: String) -> String {
+    return object.annotations[name] as? String ?? `default`
+}
+
+func transformer(for type: String) -> String {
+    let castTypes = Set([ "Any", "String" ])
+    let numberTypes = Set([ "Int", "Int8", "Int16", "Int16", "Int32", "Int64", "UInt", "UInt8", "UInt16", "UInt16", "UInt32", "UInt64", "Float", "Double", "CGFloat", "TimeInterval", "Bool" ])
+    if castTypes.contains(type) {
+        return "CastLightTransformer<\(type)>"
+    } else if numberTypes.contains(type) {
+        return "NumberLightTransformer<\(type)>"
+    } else {
+        return "\(type)LightTransformer"
+    }
+}
+
+func enumValueTransformer(for type: Enum, prefix: String) -> String? {
+    if let rawTransformer = type.annotations["\(prefix).transformer"] as? String {
+        return rawTransformer
+    } else if let rawType = type.annotations["\(prefix).type"] as? String ?? type.rawType?.name ?? type.rawTypeName?.name {
+        return transformer(for: cleanTypeName(rawType)) + "()"
+    }
+    return nil
+}
+
+func enumRawValue(for enumCase: EnumCase, rawType: String?, prefix: String) -> String {
+    if let string = enumCase.annotations["\(prefix).value"] as? String {
+        return "\"\(string)\""
+    } else if let int = enumCase.annotations["\(prefix).value"] as? Int {
+        return "\(int)"
+    } else if rawType == "String", let string = enumCase.rawValue {
+        return "\"\(string)\""
+    } else {
+        return enumCase.rawValue ?? "\"\(enumCase.name)\""
+    }
+}
+-%>
+<%#
+
+Enum Light Transformer
+
+-%>
+<%
+let enumTransformerBaseName = "enumLightTransformer"
+for type in types.enums where type.annotations[enumTransformerBaseName] != nil {
+    let transformerId = stringAnnotation(type, enumTransformerBaseName, "")
+    let enumTransformerName = enumTransformerBaseName + (transformerId.isEmpty ? "" : ".\(transformerId)")
+    let name = stringAnnotation(type, "\(enumTransformerName).name", cleanTypeName(type.name) + "LightTransformer")
+-%>
+// sourcery:file:<%= name %>.swift
+import Foundation
+import Legacy
+
+<%_ if type.hasAssociatedValues { -%>
+// Enums with associated values are not supported.
+// sourcery:end
+<%_ continue } -%>
+<%_ guard let valueTransformer = enumValueTransformer(for: type, prefix: enumTransformerName) else { -%>
+// No raw type detected.
+// sourcery:end
+<%_ continue } -%>
+// swiftlint:disable all
+struct <%= name %>: LightTransformer {
+    typealias T = <%= type.name %>
+
+    private let transformer = <%= valueTransformer %>
+
+    func from(any value: Any?) -> T? {
+        guard let rawValue = transformer.from(any: value) else { return nil }
+
+        switch rawValue {
+            <%_ for enumCase in type.cases { -%>
+            case <%= enumRawValue(for: enumCase, rawType: type.rawType?.name ?? type.rawTypeName?.name, prefix: enumTransformerName) %>:
+                return .<%= enumCase.name %>
+            <%_ } -%>
+            default:
+                return nil
+        }
+    }
+
+    func to(any value: T?) -> Any? {
+        guard let value = value else { return nil }
+
+        switch value {
+            <%_ for enumCase in type.cases { -%>
+            case .<%= enumCase.name %>:
+                return transformer.to(any: <%= enumRawValue(for: enumCase, rawType: type.rawType?.name ?? type.rawTypeName?.name, prefix: enumTransformerName) %>)
+            <%_ } -%>
+        }
+    }
+}
+
+// sourcery:end
+<% } -%>
+<%#
+
+Object Light Transformer
+
+-%>
+<%
+let transformerBaseName = "lightTransformer"
+for type in types.all where type.annotations[transformerBaseName] != nil {
+    let transformerId = stringAnnotation(type, transformerBaseName, "")
+    let transformerName = transformerBaseName + (transformerId.isEmpty ? "" : ".\(transformerId)")
+    let name = stringAnnotation(type, "\(transformerName).name", cleanTypeName(type.name) + "LightTransformer")
+    let variables = type.storedVariables
+-%>
+// sourcery:file:<%= name %>.swift
+import Foundation
+import CoreGraphics
+import Legacy
+
+// swiftlint:disable all
+struct <%= name %>: LightTransformer {
+    typealias T = <%= type.name %>
+
+    <%_ for variable in variables { -%>
+    let <%= variable.name %>Name = "<%= stringAnnotation(variable, "\(transformerName).name", variable.name) %>"
+    <%_ } -%>
+
+    <%_ for variable in variables {
+        var variableTransformer: String
+        if let annotatedTransformer = variable.annotations[transformerName] as? String {
+            variableTransformer = annotatedTransformer
+        } else if variable.isArray, let elementTransformer = variable.annotations["\(transformerName).element"] as? String {
+            variableTransformer = "ArrayLightTransformer(transformer: \(elementTransformer))"
+        } else if variable.isArray, let arrayType = variable.typeName.array {
+            let elementTransformer = transformer(for: cleanTypeName(arrayType.elementTypeName.name)) + "()"
+            variableTransformer = "ArrayLightTransformer(transformer: \(elementTransformer))"
+        } else if variable.isDictionary, let keyTransformer = variable.annotations["\(transformerName).key"] as? String, let valueTransformer = variable.annotations["\(transformerName).value"] as? String {
+            variableTransformer = "DictionaryLightTransformer(keyTransformer: \(keyTransformer), valueTransformer: \(valueTransformer))"
+        } else if variable.isDictionary, let dictionaryType = variable.typeName.dictionary {
+            let keyTransformer  = transformer(for: cleanTypeName(dictionaryType.keyTypeName.name)) + "()"
+            let valueTransformer = transformer(for: cleanTypeName(dictionaryType.valueTypeName.name)) + "()"
+            variableTransformer = "DictionaryLightTransformer(keyTransformer: \(keyTransformer), valueTransformer: \(valueTransformer))"
+        } else if variable.isOptional {
+            variableTransformer = transformer(for: cleanTypeName(variable.type?.name ?? variable.unwrappedTypeName)) + "()"
+        } else {
+            variableTransformer = transformer(for: cleanTypeName(variable.type?.name ?? variable.typeName.name)) + "()"
+        } -%>
+    let <%= variable.name %>Transformer = <%= variableTransformer %>
+    <%_ } -%>
+
+    func from(any value: Any?) -> T? {
+        guard let dictionary = value as? [String: Any] else { return nil }
+
+        <%_ for variable in variables { -%>
+            <%_ if variable.isOptional { -%>
+        let <%= variable.name %> = <%= variable.name %>Transformer.from(any: dictionary[<%= variable.name %>Name])
+            <%_ } else { -%>
+        guard let <%= variable.name %> = <%= variable.name %>Transformer.from(any: dictionary[<%= variable.name %>Name]) else { return nil }
+            <%_ } -%>
+        <%_ } -%>
+
+        <%_ for variable in variables { -%>
+            <%_ if let validate = variable.annotations["\(transformerName).validate"] as? String, !validate.isEmpty { -%>
+        if let error = <%= validate %>(<%= variable.name %>) { return nil }
+            <%_ } -%>
+        <%_ } -%>
+        return T(
+            <%_ for (index, variable) in variables.enumerated() { -%>
+            <%= variable.name %>: <%= variable.name %><%= index != variables.count - 1 ? "," : "" %>
+            <%_ } -%>
+        )
+    }
+
+    func to(any value: T?) -> Any? {
+        guard let value = value else { return nil }
+
+        var dictionary: [String: Any] = [:]
+        <%_ for variable in variables { -%>
+        dictionary[<%= variable.name %>Name] = <%= variable.name %>Transformer.to(any: value.<%= variable.name %>)
+        <%_ } -%>
+        return dictionary
+    }
+}
+
+// sourcery:end
+<% } -%>

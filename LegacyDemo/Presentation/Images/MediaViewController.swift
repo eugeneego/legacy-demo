@@ -32,6 +32,7 @@ class MediaViewController: ViewController, ImageLoaderDependency,
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        collectionView.backgroundColor = view.backgroundColor
         collectionView.registerReusableCell(MediaCell.id)
     }
 
@@ -45,12 +46,12 @@ class MediaViewController: ViewController, ImageLoaderDependency,
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        .portrait
     }
 
     private func update() {
         input.media { [weak self] result in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
 
             self.media = result.value ?? []
             self.collectionView.reloadData()
@@ -60,7 +61,7 @@ class MediaViewController: ViewController, ImageLoaderDependency,
     // MARK: - Collection View
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return media.count
+        media.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -12,7 +12,7 @@ import LegacyGallery
 
 class MediaFlow {
     var viewController: UIViewController {
-        return navigationController
+        navigationController
     }
 
     private let container: DependencyInjectionContainer
@@ -30,7 +30,10 @@ class MediaFlow {
         mediaViewController = UIStoryboard(name: "Main", bundle: nil).instantiate()
 
         navigationController = UINavigationController(rootViewController: mediaViewController)
-        navigationController.tabBarItem = UITabBarItem(title: "Media", image: nil, selectedImage: nil)
+
+        let tabImage = UIImage.system(name: "photo")
+        let tabSelectedImage = UIImage.system(name: "photo.fill")
+        navigationController.tabBarItem = UITabBarItem(title: "Media", image: tabImage, selectedImage: tabSelectedImage)
 
         container.resolve(mediaViewController)
         mediaViewController.input = MediaViewController.Input(media: mediaService.media)
@@ -62,8 +65,8 @@ class MediaFlow {
                         url: nil,
                         previewImage: item.offset == index ? image : nil,
                         previewImageLoader: thumbnail.map { thumbnail in
-                            // swiftlint:disable:next implicit_return
-                            return { size, completion in
+                            // swiftlint:disable:next opening_brace
+                            { size, completion in
                                 imageLoader.load(url: thumbnail, size: size, mode: .fill) { result in
                                     completion(result.map(success: { .success($0.image) }, failure: { .failure($0) }))
                                 }
@@ -86,14 +89,22 @@ class MediaFlow {
             }
         }
 
-        let previewView = createGalleryPreview()
+        let backgroundColor: UIColor
+        if #available(iOS 13.0, *) {
+            backgroundColor = .systemBackground
+        } else {
+            backgroundColor = .white
+        }
+        let actionColor = UIColor.orange
+
+        let previewView = createGalleryPreview(backgroundColor: backgroundColor)
 
         let setupItemAppearance = { (controller: GalleryItemViewController) in
-            controller.view.backgroundColor = .white
-            controller.loadingIndicatorView.color = .orange
-            controller.titleView.backgroundColor = .white
-            controller.closeButton.setTitleColor(.orange, for: .normal)
-            controller.shareButton.setTitleColor(.orange, for: .normal)
+            controller.view.backgroundColor = backgroundColor
+            controller.titleView.backgroundColor = backgroundColor
+            controller.loadingIndicatorView.color = actionColor
+            controller.closeButton.setTitleColor(actionColor, for: .normal)
+            controller.shareButton.setTitleColor(actionColor, for: .normal)
         }
 
         let container = self.container
@@ -123,10 +134,10 @@ class MediaFlow {
         }
         controller.setupAppearance = { controller in
             controller.initialControlsVisibility = true
-            controller.view.backgroundColor = .white
-            controller.titleView.backgroundColor = .white
-            controller.closeButton.setTitleColor(.orange, for: .normal)
-            controller.shareButton.setTitleColor(.orange, for: .normal)
+            controller.view.backgroundColor = backgroundColor
+            controller.titleView.backgroundColor = backgroundColor
+            controller.closeButton.setTitleColor(actionColor, for: .normal)
+            controller.shareButton.setTitleColor(actionColor, for: .normal)
 
             previewView.translatesAutoresizingMaskIntoConstraints = false
             controller.view.addSubview(previewView)
@@ -156,7 +167,7 @@ class MediaFlow {
         navigationController.topViewController?.present(controller, animated: true, completion: nil)
     }
 
-    private func createGalleryPreview() -> GalleryPreviewCollectionView {
+    private func createGalleryPreview(backgroundColor: UIColor) -> GalleryPreviewCollectionView {
         let previewView = GalleryPreviewCollectionView()
         previewView.layout.itemSize = CGSize(width: 48, height: 64)
         previewView.layout.minimumInteritemSpacing = 4
@@ -171,7 +182,7 @@ class MediaFlow {
             if cell.selectedBackgroundView == nil {
                 let view = UIView()
                 view.clipsToBounds = false
-                view.backgroundColor = .white
+                view.backgroundColor = backgroundColor
                 view.layer.shadowRadius = 8
                 view.layer.shadowOffset = CGSize(width: 0, height: 4)
                 view.layer.shadowColor = UIColor.black.cgColor

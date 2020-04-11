@@ -8,12 +8,12 @@
 
 import UIKit
 
-class FeedViewController: UIViewController {
+class FeedViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        .portrait
     }
 }

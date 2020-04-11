@@ -20,5 +20,9 @@ class ViewController: UIViewController, TaggedLoggerDependency {
         super.viewDidLoad()
 
         logger?.debug("")
+
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        }
     }
 }

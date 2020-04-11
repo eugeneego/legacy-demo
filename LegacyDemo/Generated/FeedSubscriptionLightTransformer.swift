@@ -15,7 +15,7 @@ struct FeedSubscriptionLightTransformer: LightTransformer {
 
         switch rawValue {
             case 0:
-                return .none
+                return .empty
             case 1:
                 return .posts
             case 2:
@@ -29,7 +29,7 @@ struct FeedSubscriptionLightTransformer: LightTransformer {
         guard let value = value else { return nil }
 
         switch value {
-            case .none:
+            case .empty:
                 return transformer.to(any: 0)
             case .posts:
                 return transformer.to(any: 1)
