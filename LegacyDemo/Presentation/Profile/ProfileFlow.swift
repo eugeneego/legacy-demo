@@ -25,6 +25,9 @@ class ProfileFlow {
         container.resolve(profileViewController)
 
         navigationController = UINavigationController(rootViewController: profileViewController)
-        navigationController.tabBarItem = UITabBarItem(title: "Profile", image: nil, selectedImage: nil)
+
+        let tabImage = UIImage.system(name: "person")
+        let tabSelectedImage = UIImage.system(name: "person.fill")
+        navigationController.tabBarItem = UITabBarItem(title: "Profile", image: tabImage, selectedImage: tabSelectedImage)
     }
 }

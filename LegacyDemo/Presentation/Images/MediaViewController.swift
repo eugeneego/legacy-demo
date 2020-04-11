@@ -32,6 +32,7 @@ class MediaViewController: ViewController, ImageLoaderDependency,
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        collectionView.backgroundColor = view.backgroundColor
         collectionView.registerReusableCell(MediaCell.id)
     }
 
@@ -50,7 +51,7 @@ class MediaViewController: ViewController, ImageLoaderDependency,
 
     private func update() {
         input.media { [weak self] result in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
 
             self.media = result.value ?? []
             self.collectionView.reloadData()

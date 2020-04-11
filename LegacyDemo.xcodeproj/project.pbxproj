@@ -22,6 +22,7 @@
 		B2FA829AEC78AE2AEC773820 /* 08-artem-bali-565223-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2FA847CE291296CC3F1AE27 /* 08-artem-bali-565223-unsplash.jpg */; };
 		B2FA82C6263DDDA891B4416C /* 20-ryoji-iwata-669965-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2FA8BBFF4466A800457B6EF /* 20-ryoji-iwata-669965-unsplash.jpg */; };
 		B2FA83002DF11E0F9A3E92FF /* FeedTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA8C48B459389546352F64 /* FeedTransformer.swift */; };
+		B2FA84411E1DA4DD27FF9D83 /* UIImage+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA883BA995A45C7C9764E1 /* UIImage+System.swift */; };
 		B2FA845072C261A33748497B /* FeedRawIntTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA88617D9243428DA43481 /* FeedRawIntTransformer.swift */; };
 		B2FA8492154233EDF9ACDE20 /* RestMediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FA881FB0E0D43C4BCADBA1 /* RestMediaService.swift */; };
 		B2FA84BD2EB003A65CD20D2C /* 02-shane-rounce-384233-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2FA8376D6F0EDC3E11A22C1 /* 02-shane-rounce-384233-unsplash.jpg */; };
@@ -117,6 +118,7 @@
 		B2FA87ADE43A8FA80D20ED1F /* AppFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		B2FA881FB0E0D43C4BCADBA1 /* RestMediaService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestMediaService.swift; sourceTree = "<group>"; };
 		B2FA883899A9EC0D9C1C7595 /* 11-fancycrave-417113-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "11-fancycrave-417113-unsplash.jpg"; sourceTree = "<group>"; };
+		B2FA883BA995A45C7C9764E1 /* UIImage+System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+System.swift"; sourceTree = "<group>"; };
 		B2FA88617D9243428DA43481 /* FeedRawIntTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedRawIntTransformer.swift; sourceTree = "<group>"; };
 		B2FA888397A75F59ED43F786 /* 10-muhammad-wahyu-nur-pratama-189040-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "10-muhammad-wahyu-nur-pratama-189040-unsplash.jpg"; sourceTree = "<group>"; };
 		B2FA88A24505D57AF16696FA /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 			children = (
 				B2FA88A24505D57AF16696FA /* ViewController.swift */,
 				B2FA8094B44FF3159EA9482F /* TabBarController.swift */,
+				B2FA883BA995A45C7C9764E1 /* UIImage+System.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 				B2FA85D16053FA56B98467AB /* FeedRawKindLightTransformer.swift in Sources */,
 				B2FA845072C261A33748497B /* FeedRawIntTransformer.swift in Sources */,
 				B2FA8DA3AC9B540378E7A92C /* ContainerBuilder.swift in Sources */,
+				B2FA84411E1DA4DD27FF9D83 /* UIImage+System.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
