@@ -62,7 +62,7 @@ class MediaFlow {
                     ))
                 case .video(let url, let thumbnail):
                     return .video(GalleryMedia.Video(
-                        url: nil,
+                        source: nil,
                         previewImage: item.offset == index ? image : nil,
                         previewImageLoader: thumbnail.map { thumbnail in
                             // swiftlint:disable:next opening_brace
@@ -76,13 +76,13 @@ class MediaFlow {
                             if url.scheme == "app" {
                                 let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
                                 let localUrl = Bundle.main.url(forResource: path, withExtension: nil)
-                                completion(Result(localUrl, MediaError.unknown(nil)))
+                                completion(Result(localUrl.map { .url($0) }, MediaError.unknown(nil)))
                             } else if let scheme = url.scheme, let directory = Storage.schemeDirectories[scheme] {
                                 let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
                                 let localUrl = directory.appendingPathComponent(path)
-                                completion(.success(localUrl))
+                                completion(.success(.url(localUrl)))
                             } else {
-                                completion(.success(url))
+                                completion(.success(.url(url)))
                             }
                         }
                     ))
