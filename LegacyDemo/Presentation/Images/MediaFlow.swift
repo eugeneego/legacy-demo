@@ -48,16 +48,14 @@ class MediaFlow {
                 case .image(let url):
                     return .image(GalleryMedia.Image(
                         previewImage: item.offset == index ? image : nil,
-                        previewImageLoader: { size, completion in
-                            imageLoader.load(url: url, size: size, mode: .fill) { result in
-                                completion(result.map(success: { .success($0.image) }, failure: { .failure($0) }))
-                            }
+                        previewImageLoader: { size in
+                            let result = await imageLoader.load(url: url, size: size, mode: .fill)
+                            return result.map(success: { .success($0.image) }, failure: { .failure($0) })
                         },
                         fullImage: nil,
-                        fullImageLoader: { completion in
-                            imageLoader.load(url: url, size: .zero, mode: .original) { result in
-                                completion(result.map(success: { .success($0.image) }, failure: { .failure($0) }))
-                            }
+                        fullImageLoader: {
+                            let result = await imageLoader.load(url: url, size: .zero, mode: .original)
+                            return result.map(success: { .success($0.image) }, failure: { .failure($0) })
                         }
                     ))
                 case .video(let url, let thumbnail):
@@ -66,35 +64,29 @@ class MediaFlow {
                         previewImage: item.offset == index ? image : nil,
                         previewImageLoader: thumbnail.map { thumbnail in
                             // swiftlint:disable:next opening_brace
-                            { size, completion in
-                                imageLoader.load(url: thumbnail, size: size, mode: .fill) { result in
-                                    completion(result.map(success: { .success($0.image) }, failure: { .failure($0) }))
-                                }
+                            { size in
+                                let result = await imageLoader.load(url: thumbnail, size: size, mode: .fill)
+                                return result.map(success: { .success($0.image) }, failure: { .failure($0) })
                             }
                         },
-                        videoLoader: { completion in
+                        videoLoader: {
                             if url.scheme == "app" {
                                 let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
                                 let localUrl = Bundle.main.url(forResource: path, withExtension: nil)
-                                completion(Result(localUrl.map { .url($0) }, MediaError.unknown(nil)))
+                                return Result(localUrl.map { .url($0) }, MediaError.unknown(nil))
                             } else if let scheme = url.scheme, let directory = Storage.schemeDirectories[scheme] {
                                 let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
                                 let localUrl = directory.appendingPathComponent(path)
-                                completion(.success(.url(localUrl)))
+                                return .success(.url(localUrl))
                             } else {
-                                completion(.success(.url(url)))
+                                return .success(.url(url))
                             }
                         }
                     ))
             }
         }
 
-        let backgroundColor: UIColor
-        if #available(iOS 13.0, *) {
-            backgroundColor = .systemBackground
-        } else {
-            backgroundColor = .white
-        }
+        let backgroundColor = UIColor.systemBackground
         let actionColor = UIColor.orange
 
         let previewView = createGalleryPreview(backgroundColor: backgroundColor)
@@ -144,7 +136,7 @@ class MediaFlow {
             NSLayoutConstraint.activate([
                 previewView.leadingAnchor.constraint(equalTo: controller.view.leadingAnchor),
                 previewView.trailingAnchor.constraint(equalTo: controller.view.trailingAnchor),
-                previewView.bottomAnchor.constraint(equalTo: controller.bottomLayoutGuide.topAnchor),
+                previewView.bottomAnchor.constraint(equalTo: controller.view.safeAreaLayoutGuide.bottomAnchor),
                 previewView.heightAnchor.constraint(equalToConstant: 80),
             ])
             previewView.items = controller.items

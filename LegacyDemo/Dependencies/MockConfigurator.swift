@@ -23,8 +23,8 @@ final class MockConfigurator: Configurator {
         configuration.timeoutIntervalForResource = timeout * 2
         configuration.urlCache = URLCache(memoryCapacity: imagesMemoryCapacity, diskCapacity: imagesDiskCapacity, diskPath: nil)
 
-        let queue = DispatchQueue.global(qos: .default)
-        let http = UrlSessionHttp(configuration: configuration, responseQueue: queue, logger: logger, loggerTag: "ImagesHttp")
+        let logger = DefaultUrlSessionHttpLogger(logger: SimpleTaggedLogger(logger: logger, tag: "ImagesHttp"))
+        let http = UrlSessionHttp(configuration: configuration, logger: logger)
         return http
     }
 

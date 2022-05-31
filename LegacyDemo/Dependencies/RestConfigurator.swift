@@ -37,9 +37,8 @@ class RestConfigurator: Configurator {
             )
         ]
 
-        let queue = DispatchQueue.global(qos: .default)
-        let http = UrlSessionHttp(configuration: configuration, responseQueue: queue, logger: logger, loggerTag: "ApiHttp")
-        http.trustPolicies = trustPolicies
+        let logger = DefaultUrlSessionHttpLogger(logger: SimpleTaggedLogger(logger: logger, tag: "ApiHttp"))
+        let http = UrlSessionHttp(configuration: configuration, trustPolicies: trustPolicies, logger: logger)
         return http
     }
 
@@ -49,15 +48,14 @@ class RestConfigurator: Configurator {
         configuration.timeoutIntervalForResource = timeout * 2
         configuration.urlCache = URLCache(memoryCapacity: imagesMemoryCapacity, diskCapacity: imagesDiskCapacity, diskPath: nil)
 
-        let queue = DispatchQueue.global(qos: .default)
-        let http = UrlSessionHttp(configuration: configuration, responseQueue: queue, logger: logger, loggerTag: "ImagesHttp")
+        let logger = DefaultUrlSessionHttpLogger(logger: SimpleTaggedLogger(logger: logger, tag: "ImagesHttp"))
+        let http = UrlSessionHttp(configuration: configuration, logger: logger)
         return http
     }
 
     private func rest(baseUrl: URL, http: Http) -> LightRestClient {
         let url = baseUrl.appendingPathComponent("feed", isDirectory: true)
-        let queue = DispatchQueue.global(qos: .default)
-        let rest = BaseRestClient(http: http, baseURL: url, workQueue: queue, completionQueue: DispatchQueue.main)
+        let rest = BaseRestClient(http: http, baseUrl: url)
         return rest
     }
 
