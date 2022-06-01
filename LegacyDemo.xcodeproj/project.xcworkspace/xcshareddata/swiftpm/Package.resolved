@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/eugeneego/legacy",
       "state" : {
-        "revision" : "6bccdc2feed32b81a86b12fdaacfe049bb33e716",
-        "version" : "8.0.1"
+        "revision" : "68956f7c085fee024778619d0f42a36429b66c5f",
+        "version" : "8.0.2"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/eugeneego/legacy-gallery",
       "state" : {
-        "revision" : "214532fa48bbbdc5c77e86ff0e9f962f24e4ed15",
-        "version" : "2.0.0"
+        "revision" : "0b14f03907cf9bbcfe100b1e17ba743911b00357",
+        "version" : "2.0.1"
       }
     }
   ],
