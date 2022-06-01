@@ -37,23 +37,26 @@ class MediaFlow {
 
         container.resolve(mediaViewController)
         mediaViewController.input = MediaViewController.Input(media: mediaService.media)
-        mediaViewController.output = MediaViewController.Output(selectMedia: gallery)
+        mediaViewController.output = MediaViewController.Output(selectMedia: gallery, showModalList: showModalList)
+    }
+
+    private func showModalList() {
+        let flow = MediaFlow(container: container, mediaService: mediaService, imageLoader: imageLoader)
+        mediaViewController.present(flow.viewController, animated: true)
     }
 
     private func gallery(media: [Media], index: Int, image: UIImage?) {
-        let imageLoader: ImageLoader = self.imageLoader
-
         let media = media.enumerated().map { item -> GalleryMedia in
             switch item.element {
                 case .image(let url):
                     return .image(GalleryMedia.Image(
                         previewImage: item.offset == index ? image : nil,
-                        previewImageLoader: { size in
+                        previewImageLoader: { [imageLoader] size in
                             let result = await imageLoader.load(url: url, size: size, mode: .fill)
                             return result.map(success: { .success($0.image) }, failure: { .failure($0) })
                         },
                         fullImage: nil,
-                        fullImageLoader: {
+                        fullImageLoader: { [imageLoader] in
                             let result = await imageLoader.load(url: url, size: .zero, mode: .original)
                             return result.map(success: { .success($0.image) }, failure: { .failure($0) })
                         }
@@ -63,8 +66,7 @@ class MediaFlow {
                         source: nil,
                         previewImage: item.offset == index ? image : nil,
                         previewImageLoader: thumbnail.map { thumbnail in
-                            // swiftlint:disable:next opening_brace
-                            { size in
+                            { [imageLoader] size in // swiftlint:disable:this opening_brace
                                 let result = await imageLoader.load(url: thumbnail, size: size, mode: .fill)
                                 return result.map(success: { .success($0.image) }, failure: { .failure($0) })
                             }
@@ -99,8 +101,6 @@ class MediaFlow {
             controller.shareButton.setTitleColor(actionColor, for: .normal)
         }
 
-        let container = self.container
-
         let controller = GalleryViewController(spacing: 20)
         container.resolve(controller)
         controller.items = media
@@ -110,7 +110,7 @@ class MediaFlow {
         controller.availableControls = [ .close, .share ]
         controller.initialControlsVisibility = true
         controller.statusBarStyle = .default
-        controller.viewerForItem = { item in
+        controller.viewerForItem = { [container] item in
             switch item {
                 case .image(let image):
                     let controller = GalleryImageViewController(image: image)

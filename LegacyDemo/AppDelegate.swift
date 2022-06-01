@@ -20,11 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, TaggedLoggerDependency {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
-        if #available(iOS 13.0, *) {
-            window.backgroundColor = .systemBackground
-        } else {
-            window.backgroundColor = .white
-        }
+        window.backgroundColor = .systemBackground
         self.window = window
 
         #if DEV

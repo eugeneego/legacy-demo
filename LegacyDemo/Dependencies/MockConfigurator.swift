@@ -30,7 +30,7 @@ final class MockConfigurator: Configurator {
 
     func create() -> DependencyInjectionContainer {
         let logger = PrintLogger()
-        let imagesHttp = self.imagesHttp(logger: logger)
+        let imagesHttp = imagesHttp(logger: logger)
 
         let imageLoader = AppImageLoader(imageLoader: HttpImageLoader(http: imagesHttp))
         let feedService = MockFeedService()

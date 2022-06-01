@@ -17,23 +17,19 @@ struct ContainerBuilder {
     func build() -> DependencyInjectionContainer {
         let container = Odin()
 
-        let logger = self.logger
-        container.register { (object: inout TaggedLoggerDependency) in
+        container.register { [logger] (object: inout TaggedLoggerDependency) in
             object.logger = SimpleTaggedLogger(logger: logger, tag: String(describing: type(of: object)))
         }
-        container.register { () -> Logger in logger }
+        container.register { [logger] () -> Logger in logger }
 
-        let imageLoader = self.imageLoader
-        container.register { (object: inout ImageLoaderDependency) in object.imageLoader = imageLoader }
-        container.register { () -> ImageLoader in imageLoader }
+        container.register { [imageLoader] (object: inout ImageLoaderDependency) in object.imageLoader = imageLoader }
+        container.register { [imageLoader] () -> ImageLoader in imageLoader }
 
-        let feedService = self.feedService
-        container.register { (object: inout FeedServiceDependency) in object.feedService = feedService }
-        container.register { () -> FeedService in feedService }
+        container.register { [feedService] (object: inout FeedServiceDependency) in object.feedService = feedService }
+        container.register { [feedService] () -> FeedService in feedService }
 
-        let mediaService = self.mediaService
-        container.register { (object: inout MediaServiceDependency) in object.mediaService = mediaService }
-        container.register { () -> MediaService in mediaService }
+        container.register { [mediaService] (object: inout MediaServiceDependency) in object.mediaService = mediaService }
+        container.register { [mediaService] () -> MediaService in mediaService }
 
         container.register { [unowned container] (object: inout DependencyContainerDependency) in object.container = container }
 

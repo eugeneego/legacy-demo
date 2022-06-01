@@ -10,7 +10,6 @@ import UIKit
 
 extension UIImage {
     static func system(name: String) -> UIImage? {
-        guard #available(iOS 13.0, *) else { return nil }
-        return UIImage(systemName: name)
+        UIImage(systemName: name)
     }
 }

@@ -22,6 +22,7 @@ class MediaViewController: ViewController, ImageLoaderDependency,
 
     struct Output {
         var selectMedia: (_ media: [Media], _ index: Int, _ image: UIImage?) -> Void
+        var showModalList: () -> Void
     }
 
     @IBOutlet private var collectionView: UICollectionView!
@@ -31,6 +32,8 @@ class MediaViewController: ViewController, ImageLoaderDependency,
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Modal", style: .plain, target: self, action: #selector(showModalList))
 
         collectionView.backgroundColor = view.backgroundColor
         collectionView.registerReusableCell(MediaCell.id)
@@ -56,6 +59,10 @@ class MediaViewController: ViewController, ImageLoaderDependency,
             self.media = result.value ?? []
             self.collectionView.reloadData()
         }
+    }
+
+    @objc private func showModalList() {
+        output.showModalList()
     }
 
     // MARK: - Collection View

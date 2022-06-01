@@ -61,8 +61,8 @@ class RestConfigurator: Configurator {
 
     func create() -> DependencyInjectionContainer {
         let logger = PrintLogger()
-        let apiHttp = self.apiHttp(logger: logger)
-        let imagesHttp = self.imagesHttp(logger: logger)
+        let apiHttp = apiHttp(logger: logger)
+        let imagesHttp = imagesHttp(logger: logger)
         let imageLoader = AppImageLoader(imageLoader: HttpImageLoader(http: imagesHttp))
 
         let feedUrl = baseUrl.appendingPathComponent("feed", isDirectory: true)
